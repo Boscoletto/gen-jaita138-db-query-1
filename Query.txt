@@ -80,6 +80,12 @@ group by u.id_utente;
 -- Query 2: Trova la categoria con il maggior numero di articoli associati.
 
 
+select c.nome_categoria, COUNT(ac.id_articolo) AS numero_articoli
+from Categorie c
+join Articoli_Categorie ac ON c.id_categoria = ac.id_categoria
+group by c.id_categoria, c.nome_categoria
+order by numero_articoli DESC
+limit 1;
 
 
 -- Query 3: Recupera gli utenti che hanno scritto più di 2 articoli.
@@ -91,13 +97,20 @@ from Utenti u
 group by u.id_utente
 having COUNT(a.id_articolo) > 2;
 
--- Query 4:
+-- Query 4: Calcola la data di pubblicazione più recente per ogni categoria.
+
+select c.nome_categoria, MAX(a.data_pubblicazione) AS data_pubblicazione_piu_recente
+from Categorie c
+join Articoli_Categorie ac 
+		on c.id_categoria = ac.id_categoria
+join Articoli a 
+		on ac.id_articolo = a.id_articolo
+group by c.id_categoria, c.nome_categoria
+order by data_pubblicazione_piu_recente desc;
 
 
--- Query 5: 
 
-
--- Query 6: Recupera le categorie che hanno almeno 3 articoli associati.
+-- Quer-- Query 6: Recupera le categorie che hanno almeno 3 articoli associati.
 
 select c.nome_categoria, COUNT(ac.id_articolo) AS numero_articoli
 from Categorie c
@@ -123,7 +136,15 @@ order by data_iscrizione asc
 limit 1;
 
 
--- Query 9: Recupera le categorie e il numero di articoli associati a ciascuna, ordinati dal più al meno
+-- Query 9: Recupera le categorie e il numero di articoli associati a ciascuna, ordinati dal più al meno.
+
+select c.nome_categoria, COUNT(ac.id_articolo) AS numero_articoli
+from Categorie c
+		left join Articoli_Categorie ac 
+		on c.id_categoria = ac.id_categoria
+group by c.id_categoria, c.nome_categoria
+order by  numero_articoli DESC;
+
 
 
 -- Query 10: Calcola il numero totale di articoli pubblicati da utenti iscritti nel 2024.
@@ -132,7 +153,5 @@ select COUNT(a.id_articolo) AS numero_articoli
 from Articoli a
      join Utenti u 
      on a.id_utente = u.id_utente
-WHERE YEAR(u.data_iscrizione) = 2024;
-
-
+WHERE YEAR(u.data_iscrizione) = 2024;y 5: 
 
